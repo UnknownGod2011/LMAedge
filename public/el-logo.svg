@@ -1,0 +1,10 @@
+<svg width="400" height="400" viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Padding around shape -->
+  <g transform="translate(80, 80)">
+    <!-- Modern geometric E -->
+    <path d="M 20 40 L 100 40 L 100 60 L 45 60 L 45 110 L 90 110 L 90 130 L 45 130 L 45 180 L 100 180 L 100 200 L 20 200 Z" fill="black"/>
+    
+    <!-- Modern geometric L -->
+    <path d="M 130 40 L 155 40 L 155 180 L 210 180 L 210 200 L 130 200 Z" fill="black"/>
+  </g>
+</svg>

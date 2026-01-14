@@ -1,0 +1,269 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* EdgeLedger Enterprise Design System */
+    /* Elegant, sophisticated, modern financial aesthetic */
+    
+    --background: 0 0% 100%;
+    --foreground: 222 47% 11%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 11%;
+
+    /* Refined blue - professional and trustworthy */
+    --primary: 221 83% 53%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 214 32% 97%;
+    --secondary-foreground: 222 47% 11%;
+
+    --muted: 214 32% 97%;
+    --muted-foreground: 215 16% 47%;
+
+    --accent: 214 32% 97%;
+    --accent-foreground: 222 47% 11%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    /* Success state for verified/confirmed */
+    --success: 142 76% 36%;
+    --success-foreground: 0 0% 100%;
+
+    /* Warning for medium confidence */
+    --warning: 38 92% 50%;
+    --warning-foreground: 0 0% 100%;
+
+    --border: 214 32% 91%;
+    --input: 214 32% 91%;
+    --ring: 221 83% 53%;
+
+    --radius: 0.5rem;
+
+    /* Sidebar - elegant off-white */
+    --sidebar-background: 214 32% 98%;
+    --sidebar-foreground: 215 16% 30%;
+    --sidebar-primary: 221 83% 53%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 214 32% 95%;
+    --sidebar-accent-foreground: 222 47% 11%;
+    --sidebar-border: 214 32% 91%;
+    --sidebar-ring: 221 83% 53%;
+
+    /* Custom tokens for EdgeLedger */
+    --surface-elevated: 0 0% 100%;
+    --surface-subtle: 214 32% 98%;
+    --text-primary: 222 47% 11%;
+    --text-secondary: 215 16% 40%;
+    --text-tertiary: 215 16% 55%;
+    --confidence-high: 142 76% 36%;
+    --confidence-medium: 38 92% 50%;
+    --confidence-low: 0 84% 60%;
+    --status-pending: 38 92% 50%;
+    --status-complete: 142 76% 36%;
+    --status-error: 0 84% 60%;
+    --diff-added: 142 76% 95%;
+    --diff-removed: 0 84% 95%;
+    --diff-added-text: 142 76% 25%;
+    --diff-removed-text: 0 84% 35%;
+  }
+
+  .dark {
+    --background: 222 47% 7%;
+    --foreground: 214 32% 96%;
+
+    --card: 222 47% 10%;
+    --card-foreground: 214 32% 96%;
+
+    --popover: 222 47% 10%;
+    --popover-foreground: 214 32% 96%;
+
+    --primary: 221 83% 53%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 217 33% 15%;
+    --secondary-foreground: 214 32% 96%;
+
+    --muted: 217 33% 15%;
+    --muted-foreground: 215 16% 55%;
+
+    --accent: 217 33% 15%;
+    --accent-foreground: 214 32% 96%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --success: 142 76% 45%;
+    --success-foreground: 0 0% 100%;
+
+    --warning: 38 92% 55%;
+    --warning-foreground: 0 0% 100%;
+
+    --border: 217 33% 18%;
+    --input: 217 33% 18%;
+    --ring: 221 83% 53%;
+
+    --sidebar-background: 222 47% 8%;
+    --sidebar-foreground: 214 32% 90%;
+    --sidebar-primary: 221 83% 53%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 217 33% 12%;
+    --sidebar-accent-foreground: 214 32% 96%;
+    --sidebar-border: 217 33% 18%;
+    --sidebar-ring: 221 83% 53%;
+
+    --surface-elevated: 222 47% 10%;
+    --surface-subtle: 222 47% 8%;
+    --text-primary: 214 32% 96%;
+    --text-secondary: 215 16% 70%;
+    --text-tertiary: 215 16% 55%;
+    --confidence-high: 142 76% 45%;
+    --confidence-medium: 38 92% 55%;
+    --confidence-low: 0 84% 65%;
+    --status-pending: 38 92% 55%;
+    --status-complete: 142 76% 45%;
+    --status-error: 0 84% 65%;
+    --diff-added: 142 76% 15%;
+    --diff-removed: 0 84% 15%;
+    --diff-added-text: 142 76% 75%;
+    --diff-removed-text: 0 84% 75%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background-image: 
+      radial-gradient(at 0% 0%, hsl(var(--primary) / 0.03) 0px, transparent 50%),
+      radial-gradient(at 100% 100%, hsl(var(--primary) / 0.02) 0px, transparent 50%);
+  }
+
+  /* Enterprise typography */
+  h1, h2, h3, h4, h5, h6 {
+    @apply tracking-tight font-semibold;
+    letter-spacing: -0.025em;
+  }
+
+  /* Smooth animations */
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes slide-in {
+    from {
+      opacity: 0;
+      transform: translateX(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  .animate-fade-in {
+    animation: fade-in 0.5s ease-out;
+  }
+
+  .animate-slide-in {
+    animation: slide-in 0.3s ease-out;
+  }
+
+  /* Data table styling */
+  .data-row {
+    @apply border-b border-border transition-all duration-200 hover:bg-muted/50;
+  }
+
+  /* Confidence indicators */
+  .confidence-high {
+    @apply text-[hsl(var(--confidence-high))] font-medium;
+  }
+  .confidence-medium {
+    @apply text-[hsl(var(--confidence-medium))] font-medium;
+  }
+  .confidence-low {
+    @apply text-[hsl(var(--confidence-low))] font-medium;
+  }
+
+  /* Status badges */
+  .status-pending {
+    @apply bg-[hsl(var(--status-pending)/0.1)] text-[hsl(var(--status-pending))] border border-[hsl(var(--status-pending)/0.2)];
+  }
+  .status-complete {
+    @apply bg-[hsl(var(--status-complete)/0.1)] text-[hsl(var(--status-complete))] border border-[hsl(var(--status-complete)/0.2)];
+  }
+  .status-error {
+    @apply bg-[hsl(var(--status-error)/0.1)] text-[hsl(var(--status-error))] border border-[hsl(var(--status-error)/0.2)];
+  }
+
+  /* Diff highlighting */
+  .diff-added {
+    @apply bg-[hsl(var(--diff-added))] text-[hsl(var(--diff-added-text))];
+  }
+  .diff-removed {
+    @apply bg-[hsl(var(--diff-removed))] text-[hsl(var(--diff-removed-text))];
+  }
+
+  /* Monospace for data values */
+  .mono {
+    font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+    font-size: 0.875em;
+  }
+}
+
+@layer components {
+  /* Enterprise card styling with elegant shadow */
+  .enterprise-card {
+    @apply bg-card border border-border rounded-lg shadow-sm transition-all duration-200;
+  }
+
+  .enterprise-card:hover {
+    @apply shadow-md;
+  }
+
+  /* Section headers */
+  .section-header {
+    @apply text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3;
+  }
+
+  /* Data field */
+  .data-field {
+    @apply py-3 border-b border-border last:border-0 transition-colors;
+  }
+
+  /* Subtle hover effect for interactive elements */
+  .interactive {
+    @apply transition-all duration-200 hover:bg-muted/50 cursor-pointer rounded-md;
+  }
+
+  .interactive:active {
+    @apply scale-[0.99];
+  }
+
+  /* Elegant gradient backgrounds */
+  .gradient-primary {
+    background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--primary) / 0.8) 100%);
+  }
+
+  .gradient-subtle {
+    background: linear-gradient(135deg, hsl(var(--background)) 0%, hsl(var(--muted)) 100%);
+  }
+}
