@@ -144,7 +144,10 @@
   body {
     @apply bg-background text-foreground antialiased;
     font-feature-settings: "cv02", "cv03", "cv04", "cv11";
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-optical-sizing: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
     background-image: 
       radial-gradient(at 0% 0%, hsl(var(--primary) / 0.03) 0px, transparent 50%),
       radial-gradient(at 100% 100%, hsl(var(--primary) / 0.02) 0px, transparent 50%);
@@ -265,5 +268,76 @@
 
   .gradient-subtle {
     background: linear-gradient(135deg, hsl(var(--background)) 0%, hsl(var(--muted)) 100%);
+  }
+}
+
+/* Metallic Text Effect */
+.metallic-text {
+  background: linear-gradient(
+    135deg,
+    #667eea 0%,
+    #764ba2 25%,
+    #f093fb 50%,
+    #4facfe 75%,
+    #667eea 100%
+  );
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: metallicShine 8s ease-in-out infinite;
+  position: relative;
+  filter: drop-shadow(0 0 8px rgba(102, 126, 234, 0.3));
+}
+
+.dark .metallic-text {
+  background: linear-gradient(
+    135deg,
+    #a8b8ff 0%,
+    #c4b5fd 25%,
+    #fde4ff 50%,
+    #93c5fd 75%,
+    #a8b8ff 100%
+  );
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: metallicShine 8s ease-in-out infinite;
+  filter: drop-shadow(0 0 12px rgba(168, 184, 255, 0.4));
+}
+
+@keyframes metallicShine {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+/* Add subtle shimmer effect */
+.metallic-text::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.3),
+    transparent
+  );
+  animation: shimmer 3s infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 100%;
   }
 }

@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { mockLoans } from '@/data/mockLoans';
+import { loanService } from '@/services/loanService';
 import { Loan } from '@/types/loan';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -13,6 +13,7 @@ import {
 } from '@/components/ui/select';
 import { GitCompare, ArrowLeftRight, Leaf } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import ShinyText from '@/components/ui/ShinyText';
 
 interface ComparisonRowProps {
   label: string;
@@ -55,9 +56,14 @@ export default function LoanCompare() {
 
   const [loan1Id, setLoan1Id] = useState(initialLoan1);
   const [loan2Id, setLoan2Id] = useState(initialLoan2);
+  const [loans, setLoans] = useState<Loan[]>([]);
 
-  const loan1 = mockLoans.find(l => l.id === loan1Id);
-  const loan2 = mockLoans.find(l => l.id === loan2Id);
+  useEffect(() => {
+    setLoans(loanService.getLoans());
+  }, []);
+
+  const loan1 = loans.find(l => l.id === loan1Id);
+  const loan2 = loans.find(l => l.id === loan2Id);
 
   const swapLoans = () => {
     const temp = loan1Id;
@@ -68,7 +74,9 @@ export default function LoanCompare() {
   return (
     <div className="p-6 max-w-6xl mx-auto animate-fade-in">
       <div className="mb-8">
-        <h1 className="text-2xl font-semibold tracking-tight">Compare Loans</h1>
+        <h1 className="text-2xl font-semibold tracking-tight">
+          <ShinyText text="Compare Loans" speed={3} color="#64748b" shineColor="#ffffff" />
+        </h1>
         <p className="text-sm text-muted-foreground mt-1">
           Side-by-side comparison of loan terms
         </p>
@@ -83,7 +91,7 @@ export default function LoanCompare() {
                 <SelectValue placeholder="Select first loan" />
               </SelectTrigger>
               <SelectContent>
-                {mockLoans.map(loan => (
+                {loans.map(loan => (
                   <SelectItem key={loan.id} value={loan.id} disabled={loan.id === loan2Id}>
                     <span className="font-mono text-xs mr-2">{loan.id}</span>
                     {loan.borrower.value}
@@ -93,9 +101,9 @@ export default function LoanCompare() {
             </Select>
           </div>
 
-          <Button 
-            variant="ghost" 
-            size="sm" 
+          <Button
+            variant="ghost"
+            size="sm"
             onClick={swapLoans}
             disabled={!loan1Id || !loan2Id}
           >
@@ -108,7 +116,7 @@ export default function LoanCompare() {
                 <SelectValue placeholder="Select second loan" />
               </SelectTrigger>
               <SelectContent>
-                {mockLoans.map(loan => (
+                {loans.map(loan => (
                   <SelectItem key={loan.id} value={loan.id} disabled={loan.id === loan1Id}>
                     <span className="font-mono text-xs mr-2">{loan.id}</span>
                     {loan.borrower.value}
@@ -155,104 +163,104 @@ export default function LoanCompare() {
           {/* Core Terms */}
           <div className="p-4">
             <h3 className="section-header">Core Terms</h3>
-            <ComparisonRow 
-              label="Facility Type" 
-              value1={loan1.facility_type.value} 
-              value2={loan2.facility_type.value} 
+            <ComparisonRow
+              label="Facility Type"
+              value1={loan1.facility_type.value}
+              value2={loan2.facility_type.value}
             />
-            <ComparisonRow 
-              label="Currency" 
-              value1={loan1.currency.value} 
-              value2={loan2.currency.value} 
+            <ComparisonRow
+              label="Currency"
+              value1={loan1.currency.value}
+              value2={loan2.currency.value}
             />
-            <ComparisonRow 
-              label="Principal" 
-              value1={loan1.principal.value} 
+            <ComparisonRow
+              label="Principal"
+              value1={loan1.principal.value}
               value2={loan2.principal.value}
-              mono 
+              mono
             />
-            <ComparisonRow 
-              label="Interest Margin" 
-              value1={loan1.interest_margin.value} 
+            <ComparisonRow
+              label="Interest Margin"
+              value1={loan1.interest_margin.value}
               value2={loan2.interest_margin.value}
-              mono 
+              mono
             />
-            <ComparisonRow 
-              label="Maturity Date" 
-              value1={new Date(loan1.maturity_date.value).toLocaleDateString('en-GB')} 
-              value2={new Date(loan2.maturity_date.value).toLocaleDateString('en-GB')} 
+            <ComparisonRow
+              label="Maturity Date"
+              value1={new Date(loan1.maturity_date.value).toLocaleDateString('en-GB')}
+              value2={new Date(loan2.maturity_date.value).toLocaleDateString('en-GB')}
             />
-            <ComparisonRow 
-              label="Number of Lenders" 
-              value1={loan1.lenders.value.length} 
-              value2={loan2.lenders.value.length} 
+            <ComparisonRow
+              label="Number of Lenders"
+              value1={loan1.lenders.value.length}
+              value2={loan2.lenders.value.length}
             />
           </div>
 
           {/* Economic Terms */}
           <div className="p-4 border-t border-border">
             <h3 className="section-header">Economic Terms</h3>
-            <ComparisonRow 
-              label="Repayment Schedule" 
-              value1={loan1.repayment_schedule.value} 
-              value2={loan2.repayment_schedule.value} 
+            <ComparisonRow
+              label="Repayment Schedule"
+              value1={loan1.repayment_schedule.value}
+              value2={loan2.repayment_schedule.value}
             />
-            <ComparisonRow 
-              label="Arrangement Fee" 
-              value1={loan1.arrangement_fee.value} 
+            <ComparisonRow
+              label="Arrangement Fee"
+              value1={loan1.arrangement_fee.value}
               value2={loan2.arrangement_fee.value}
-              mono 
+              mono
             />
-            <ComparisonRow 
-              label="Commitment Fee" 
-              value1={loan1.commitment_fee.value} 
-              value2={loan2.commitment_fee.value} 
+            <ComparisonRow
+              label="Commitment Fee"
+              value1={loan1.commitment_fee.value}
+              value2={loan2.commitment_fee.value}
             />
           </div>
 
           {/* Covenants */}
           <div className="p-4 border-t border-border">
             <h3 className="section-header">Covenants</h3>
-            <ComparisonRow 
-              label="Financial Covenants" 
-              value1={loan1.covenants.value.filter(c => c.type === 'financial').length} 
-              value2={loan2.covenants.value.filter(c => c.type === 'financial').length} 
+            <ComparisonRow
+              label="Financial Covenants"
+              value1={loan1.covenants.value.filter(c => c.type === 'financial').length}
+              value2={loan2.covenants.value.filter(c => c.type === 'financial').length}
             />
-            <ComparisonRow 
-              label="Reporting Obligations" 
-              value1={loan1.reporting_obligations.value.length} 
-              value2={loan2.reporting_obligations.value.length} 
+            <ComparisonRow
+              label="Reporting Obligations"
+              value1={loan1.reporting_obligations.value.length}
+              value2={loan2.reporting_obligations.value.length}
             />
           </div>
 
           {/* ESG */}
           <div className="p-4 border-t border-border">
             <h3 className="section-header">ESG</h3>
-            <ComparisonRow 
-              label="ESG-Linked" 
-              value1={loan1.esg_linked.value} 
-              value2={loan2.esg_linked.value} 
+            <ComparisonRow
+              label="ESG-Linked"
+              value1={loan1.esg_linked.value}
+              value2={loan2.esg_linked.value}
             />
-            <ComparisonRow 
-              label="ESG Targets" 
-              value1={loan1.esg_terms.value.length} 
-              value2={loan2.esg_terms.value.length} 
+            <ComparisonRow
+              label="ESG Targets"
+              value1={loan1.esg_terms.value.length}
+              value2={loan2.esg_terms.value.length}
             />
           </div>
 
           {/* Metadata */}
           <div className="p-4 border-t border-border">
             <h3 className="section-header">Metadata</h3>
-            <ComparisonRow 
-              label="Current Version" 
-              value1={`v${loan1.versions.length}`} 
+            <ComparisonRow
+              label="Current Version"
+              value1={`v${loan1.versions.length}`}
               value2={`v${loan2.versions.length}`}
-              mono 
+              mono
             />
-            <ComparisonRow 
-              label="Last Updated" 
-              value1={new Date(loan1.updated_at).toLocaleDateString('en-GB')} 
-              value2={new Date(loan2.updated_at).toLocaleDateString('en-GB')} 
+            <ComparisonRow
+              label="Last Updated"
+              value1={new Date(loan1.updated_at).toLocaleDateString('en-GB')}
+              value2={new Date(loan2.updated_at).toLocaleDateString('en-GB')}
             />
           </div>
         </div>

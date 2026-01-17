@@ -13,6 +13,7 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Copy, Download, Check, Code, FileJson, Terminal } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import ShinyText from '@/components/ui/ShinyText';
 
 export default function APIExport() {
   const { toast } = useToast();
@@ -100,7 +101,9 @@ export default function APIExport() {
   return (
     <div className="p-6 max-w-5xl mx-auto animate-fade-in">
       <div className="mb-8">
-        <h1 className="text-2xl font-semibold tracking-tight">Export & API</h1>
+        <h1 className="text-2xl font-semibold tracking-tight">
+          <ShinyText text="Export & API" speed={3} color="#64748b" shineColor="#ffffff" />
+        </h1>
         <p className="text-sm text-muted-foreground mt-1">
           Export loan data or integrate via API
         </p>

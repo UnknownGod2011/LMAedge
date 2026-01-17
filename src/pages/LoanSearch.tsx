@@ -1,6 +1,7 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { mockLoans } from '@/data/mockLoans';
+import { loanService } from '@/services/loanService';
+import { Loan } from '@/types/loan';
 import { StatusBadge } from '@/components/ui/StatusBadge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -15,16 +16,22 @@ import {
 } from '@/components/ui/select';
 import { Slider } from '@/components/ui/slider';
 import { Search, X, Leaf, ArrowRight } from 'lucide-react';
+import ShinyText from '@/components/ui/ShinyText';
 
 export default function LoanSearch() {
+  const [loans, setLoans] = useState<Loan[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [currencyFilter, setCurrencyFilter] = useState<string>('all');
   const [esgFilter, setEsgFilter] = useState<string>('all');
   const [marginRange, setMarginRange] = useState<[number, number]>([0, 500]);
   const [facilityFilter, setFacilityFilter] = useState<string>('all');
 
-  const currencies = [...new Set(mockLoans.map(l => l.currency.value))];
-  const facilityTypes = [...new Set(mockLoans.map(l => l.facility_type.value))];
+  useEffect(() => {
+    setLoans(loanService.getLoans());
+  }, []);
+
+  const currencies = [...new Set(loans.map(l => l.currency.value))];
+  const facilityTypes = [...new Set(loans.map(l => l.facility_type.value))];
 
   const getMarginBps = (marginStr: string): number => {
     const match = marginStr.match(/(\d+)\s*bps/);
@@ -32,7 +39,7 @@ export default function LoanSearch() {
   };
 
   const filteredLoans = useMemo(() => {
-    return mockLoans.filter(loan => {
+    return loans.filter(loan => {
       // Text search
       if (searchQuery) {
         const query = searchQuery.toLowerCase();
@@ -68,16 +75,53 @@ export default function LoanSearch() {
     setMarginRange([0, 500]);
   };
 
-  const hasActiveFilters = searchQuery || currencyFilter !== 'all' || esgFilter !== 'all' || 
+  const hasActiveFilters = searchQuery || currencyFilter !== 'all' || esgFilter !== 'all' ||
     facilityFilter !== 'all' || marginRange[0] !== 0 || marginRange[1] !== 500;
 
   return (
     <div className="p-6 max-w-7xl mx-auto animate-fade-in">
       <div className="mb-8">
-        <h1 className="text-2xl font-semibold tracking-tight">Search & Filter</h1>
+        <h1 className="text-2xl font-semibold tracking-tight">
+          <ShinyText text="Search & Filter" speed={3} color="#64748b" shineColor="#ffffff" />
+        </h1>
         <p className="text-sm text-muted-foreground mt-1">
           Query the loan database with advanced filters
         </p>
+      </div>
+
+      {/* Dashboard Stats */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+        <div className="enterprise-card p-4 flex items-center justify-between bg-primary/5 border-primary/20">
+          <div>
+            <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Total Loans</p>
+            <p className="text-2xl font-bold mt-1">{loans.length}</p>
+          </div>
+          <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center">
+            <Search className="h-5 w-5 text-primary" />
+          </div>
+        </div>
+        <div className="enterprise-card p-4 flex items-center justify-between">
+          <div>
+            <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Total Volume</p>
+            <p className="text-2xl font-bold mt-1">
+              ${(loans.reduce((acc, l) => acc + parseFloat(l.principal.value.replace(/[^0-9.]/g, '') || '0'), 0) / 1000000).toFixed(1)}M
+            </p>
+          </div>
+          <div className="h-10 w-10 rounded-full bg-green-500/10 flex items-center justify-center">
+            <Leaf className="h-5 w-5 text-green-600" />
+          </div>
+        </div>
+        <div className="enterprise-card p-4 flex items-center justify-between">
+          <div>
+            <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Avg Margin</p>
+            <p className="text-2xl font-bold mt-1">
+              {Math.round(loans.reduce((acc, l) => acc + getMarginBps(l.interest_margin.value), 0) / (loans.length || 1))} bps
+            </p>
+          </div>
+          <div className="h-10 w-10 rounded-full bg-blue-500/10 flex items-center justify-center">
+            <ArrowRight className="h-5 w-5 text-blue-600" />
+          </div>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
@@ -240,7 +284,7 @@ export default function LoanSearch() {
                         </p>
                       </div>
                       <div className="text-right">
-                        <Link 
+                        <Link
                           to={`/loans/${loan.id}`}
                           className="inline-flex items-center text-primary hover:underline"
                         >

@@ -1,17 +1,19 @@
-<svg width="120" height="120" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <rect width="120" height="120" rx="24" fill="url(#gradient)"/>
-  <defs>
-    <linearGradient id="gradient" x1="0" y1="0" x2="120" y2="120" gradientUnits="userSpaceOnUse">
-      <stop offset="0%" stop-color="#3B82F6"/>
-      <stop offset="100%" stop-color="#2563EB"/>
-    </linearGradient>
-  </defs>
+<svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <!-- Head -->
+  <circle cx="100" cy="50" r="20" fill="black"/>
   
-  <!-- EL Letters -->
-  <text x="60" y="75" font-family="system-ui, -apple-system, sans-serif" font-size="48" font-weight="700" fill="white" text-anchor="middle">EL</text>
+  <!-- Body -->
+  <line x1="100" y1="70" x2="100" y2="130" stroke="black" stroke-width="12" stroke-linecap="round"/>
   
-  <!-- Decorative elements -->
-  <circle cx="95" cy="35" r="8" fill="#60A5FA" opacity="0.6"/>
-  <rect x="20" y="25" width="30" height="20" rx="4" fill="white" opacity="0.9"/>
-  <rect x="20" y="75" width="50" height="20" rx="4" fill="white" opacity="0.9"/>
+  <!-- Left arm -->
+  <line x1="100" y1="85" x2="60" y2="100" stroke="black" stroke-width="12" stroke-linecap="round"/>
+  
+  <!-- Right arm -->
+  <line x1="100" y1="85" x2="140" y2="70" stroke="black" stroke-width="12" stroke-linecap="round"/>
+  
+  <!-- Left leg -->
+  <line x1="100" y1="130" x2="70" y2="180" stroke="black" stroke-width="12" stroke-linecap="round"/>
+  
+  <!-- Right leg -->
+  <line x1="100" y1="130" x2="130" y2="180" stroke="black" stroke-width="12" stroke-linecap="round"/>
 </svg>

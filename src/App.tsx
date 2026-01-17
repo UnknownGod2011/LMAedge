@@ -26,8 +26,8 @@ const App = () => (
             <Route path="/" element={<LoanIngest />} />
             <Route path="/loans" element={<LoansList />} />
             <Route path="/loans/:id" element={<LoanDetail />} />
-            <Route path="/search" element={<LoanSearch />} />
-            <Route path="/compare" element={<LoanCompare />} />
+            <Route path="/loans/search" element={<LoanSearch />} />
+            <Route path="/loans/compare" element={<LoanCompare />} />
             <Route path="/api" element={<APIExport />} />
             <Route path="/test" element={<TestExtraction />} />
             <Route path="*" element={<NotFound />} />

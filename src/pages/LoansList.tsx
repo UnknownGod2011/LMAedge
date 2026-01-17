@@ -4,12 +4,15 @@ import { StatusBadge } from '@/components/ui/StatusBadge';
 import { ConfidenceIndicator } from '@/components/ui/ConfidenceIndicator';
 import { Badge } from '@/components/ui/badge';
 import { ArrowRight, Leaf } from 'lucide-react';
+import ShinyText from '@/components/ui/ShinyText';
 
 export default function LoansList() {
   return (
     <div className="p-6 max-w-7xl mx-auto animate-fade-in">
       <div className="mb-8">
-        <h1 className="text-2xl font-semibold tracking-tight">Loans</h1>
+        <h1 className="text-2xl font-semibold tracking-tight">
+          <ShinyText text="Loans" speed={3} color="#64748b" shineColor="#ffffff" />
+        </h1>
         <p className="text-sm text-muted-foreground mt-1">
           All digitised loan records
         </p>

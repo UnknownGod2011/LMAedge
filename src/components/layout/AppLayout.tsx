@@ -1,130 +1,91 @@
-import { ReactNode, useState, useEffect, useRef } from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { cn } from '@/lib/utils';
-import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
+import { ReactNode } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import {
   FileText,
   Upload,
   Search,
   GitCompare,
-  Code,
+  Code2,
 } from 'lucide-react';
+import Dock from '@/components/ui/Dock';
+import Orb from '@/components/ui/Orb';
 
 interface AppLayoutProps {
   children: ReactNode;
 }
 
-const navigation = [
-  { name: 'Analyze', href: '/', icon: Upload },
-  { name: 'Loans', href: '/loans', icon: FileText },
-  { name: 'Search', href: '/search', icon: Search },
-  { name: 'Compare', href: '/compare', icon: GitCompare },
-  { name: 'API', href: '/api', icon: Code },
-];
-
-// Dock-style nav item with magnification
-function NavItem({ 
-  item, 
-  isActive, 
-  mouseX, 
-  baseSize = 45 
-}: { 
-  item: typeof navigation[0]; 
-  isActive: boolean; 
-  mouseX: any; 
-  baseSize?: number;
-}) {
-  const ref = useRef<HTMLAnchorElement>(null);
-  
-  const distance = 150;
-  const magnification = 65;
-  
-  const mouseDistance = useTransform(mouseX, (val: number) => {
-    const rect = ref.current?.getBoundingClientRect() ?? { x: 0, width: baseSize };
-    return val - rect.x - baseSize / 2;
-  });
-
-  const width = useTransform(
-    mouseDistance,
-    [-distance, 0, distance],
-    [baseSize, magnification, baseSize]
-  );
-  
-  const widthSpring = useSpring(width, { mass: 0.1, stiffness: 150, damping: 12 });
-
-  return (
-    <motion.div style={{ width: widthSpring }}>
-      <Link
-        ref={ref}
-        to={item.href}
-        className={cn(
-          'flex flex-col items-center justify-center gap-1 rounded-lg px-3 py-2 text-sm font-medium transition-colors relative group',
-          isActive
-            ? 'text-primary'
-            : 'text-muted-foreground hover:text-foreground'
-        )}
-      >
-        <item.icon className="h-5 w-5" />
-        <span className="text-[11px] font-semibold">{item.name}</span>
-        {isActive && (
-          <motion.div
-            layoutId="activeNav"
-            className="absolute inset-0 bg-primary/10 rounded-lg -z-10"
-            transition={{ type: 'spring', stiffness: 380, damping: 30 }}
-          />
-        )}
-      </Link>
-    </motion.div>
-  );
-}
-
 export function AppLayout({ children }: AppLayoutProps) {
   const location = useLocation();
-  const mouseX = useMotionValue(Infinity);
+  const navigate = useNavigate();
+
+  const dockItems = [
+    {
+      icon: <Upload className="h-5 w-5" />,
+      label: 'Analyze',
+      onClick: () => navigate('/'),
+      className: location.pathname === '/' ? 'border-primary/50 bg-primary/10' : ''
+    },
+    {
+      icon: <FileText className="h-5 w-5" />,
+      label: 'Loans',
+      onClick: () => navigate('/loans'),
+      className: location.pathname.startsWith('/loans') && location.pathname !== '/loans/search' && location.pathname !== '/loans/compare' ? 'border-primary/50 bg-primary/10' : ''
+    },
+    {
+      icon: <Search className="h-5 w-5" />,
+      label: 'Search',
+      onClick: () => navigate('/loans/search'),
+      className: location.pathname === '/loans/search' ? 'border-primary/50 bg-primary/10' : ''
+    },
+    {
+      icon: <GitCompare className="h-5 w-5" />,
+      label: 'Compare',
+      onClick: () => navigate('/loans/compare'),
+      className: location.pathname === '/loans/compare' ? 'border-primary/50 bg-primary/10' : ''
+    },
+    {
+      icon: <Code2 className="h-5 w-5" />,
+      label: 'API',
+      onClick: () => navigate('/api'),
+      className: location.pathname === '/api' ? 'border-primary/50 bg-primary/10' : ''
+    },
+  ];
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background font-sans antialiased selection:bg-primary/10 selection:text-primary">
       {/* Header */}
       <header className="sticky top-0 z-50 border-b border-border bg-background/95 backdrop-blur-xl supports-[backdrop-filter]:bg-background/95">
         <div className="flex items-center justify-between h-20 px-8 gap-6">
           {/* Left - BIG Title */}
           <Link to="/" className="flex items-center group shrink-0">
+            <div className="relative flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-purple-500 via-blue-500 to-cyan-500 p-[2px] transition-all group-hover:scale-110 group-hover:shadow-lg group-hover:shadow-primary/50 mr-3">
+              <div className="h-full w-full rounded-full bg-background flex items-center justify-center overflow-hidden">
+                <Orb backgroundColor="#ffffff" />
+              </div>
+            </div>
             <div className="flex flex-col">
-              <span className="text-3xl font-black tracking-tight bg-gradient-to-r from-primary via-purple-500 to-primary bg-clip-text text-transparent">
+              <span className="text-2xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/70">
                 EdgeLedger
               </span>
-              <span className="text-xs text-muted-foreground -mt-1 tracking-widest uppercase font-bold">
-                Solutions
+              <span className="text-[10px] font-medium text-muted-foreground tracking-widest uppercase">
+                SOLUTIONS
               </span>
             </div>
           </Link>
-          
-          {/* Center - Wide Navigation with Dock Animation */}
-          <nav 
-            className="flex items-center gap-4 px-8 py-2.5 rounded-xl bg-secondary/50 border border-border shadow-sm flex-1 max-w-2xl justify-center"
-            onMouseMove={(e) => mouseX.set(e.pageX)}
-            onMouseLeave={() => mouseX.set(Infinity)}
-          >
-            {navigation.map((item) => {
-              const isActive = location.pathname === item.href || 
-                (item.href !== '/' && location.pathname.startsWith(item.href));
-              return (
-                <NavItem 
-                  key={item.name} 
-                  item={item} 
-                  isActive={isActive} 
-                  mouseX={mouseX}
-                />
-              );
-            })}
-          </nav>
 
-          {/* Right - Status Badge */}
-          <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-secondary/50 border border-border shrink-0">
-            <div className="h-2 w-2 rounded-full bg-success animate-pulse" />
-            <span className="text-sm font-medium text-muted-foreground whitespace-nowrap">
-              LMA Edge Hackathon
-            </span>
+          {/* Center - Dock Navigation */}
+          <div className="flex-1 flex justify-center">
+            <Dock
+              items={dockItems}
+              panelHeight={60}
+              baseItemSize={45}
+              magnification={65}
+            />
+          </div>
+
+          {/* Right - Empty for balance or User Profile later */}
+          <div className="w-[140px] flex justify-end">
+            {/* Removed Hackathon Badge as requested */}
           </div>
         </div>
       </header>
